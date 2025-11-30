@@ -1,55 +1,72 @@
-# STT-Benchmarking
-This project benchmarks multiple Uzbek speech-to-text (ASR) models on the same audio files using Hugging Face pipelines.   It automatically loads each model, runs transcription, and saves the output into a `/results` folder.
+# Audio Transcription Tool
+
+This project allows you to download audio from YouTube or direct audio links and transcribe it using multiple speech recognition models, including Whisper and Uzbek speech-to-text models.
+
+## Features
+
+Download audio from YouTube videos.
+
+Download direct audio files (.mp3, .wav, .aac, .ogg, .flac, .m4a).
+
+Transcribe audio using multiple models:
+
+openai/whisper-small (supports timestamps)
+
+ipilot7/uzbek_speach_to_text
+
+mustafoyev202/whisper-uz
+
+Save transcriptions to text files in a results folder.
+
+## Requirements
+
+Python 3.10+
+
+pip packages:
+
+pip install transformers yt_dlp requests
+
+
+FFmpeg must be installed for audio extraction from YouTube:
+FFmpeg Installation Guide
+
 ## Project Structure
-**STT_benchmarking/**
+project/
 
-**│**
+│
 
-**├─ audio/ # Your .mp3 / .wav files go here**
+├── merged_folder/       # Up-to-date code and scripts
 
-**├─ results/ # Transcriptions will be saved here**
+├── audios/              # Folder where audio files are saved
 
-**└─ scripts/**
+├── results/             # Folder where transcription results are saved
 
-**└─ run_asr_models.py**
+└── README.md
 
-## How to Run
-```bash
-1. Create and activate your conda environment
-conda create -n myenv python=3.10
-conda activate myenv
+## Usage
 
-2. Install dependencies
-pip install torch transformers librosa soundfile
+Run the main script:
 
-3. Run the script
+python main.py
 
-From the project root folder, run:
-python scripts/run_asr_models.py
-Transcriptions will be saved automatically in the:
-results/
-```
 
-## Models Used
+Enter the audio URL (YouTube or direct link) when prompted:
 
-The script currently benchmarks:
-**openai/whisper-small,**
-**ipilot7/uzbek_speach_to_text, 
-mustafoyev202/whisper-uz**
+url: https://www.youtube.com/watch?v=example
 
-You can add more models in the Python script:
-```bash
-models = [
-    "ipilot7/uzbek_speach_to_text",
-    "mustafoyev202/whisper-uz",
-    # add more models here
-]
-```
+
+The script will:
+
+Download the audio into the audios folder
+
+Run all configured speech recognition models
+
+Save each transcription in the results folder as a .txt file
 
 ## Notes
 
-The first model download takes time (1–2GB). This is normal.
+For YouTube videos, the audio will be extracted in .mp3 format.
 
-CPU inference is slower than GPU.
+Whisper models support timestamps at the word level, while other models support character-level timestamps.
 
-Whisper models only support "word" or "segment" timestamps.
+Ensure a stable internet connection when downloading audio.
