@@ -1,0 +1,7 @@
+from supabase import create_client
+import uuid
+
+url = "https://awkrpetaudwzblsoekkh.supabase.co"
+service_role_key = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3a3JwZXRhdWR3emJsc29la2toIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2NDkxMzg3MSwiZXhwIjoyMDgwNDg5ODcxfQ.4AG1y_6Tt3-TUFCuYn_HDbgnUDBXTAbZzEYF6WisBKs'
+supabase = create_client(url, service_role_key)
+
