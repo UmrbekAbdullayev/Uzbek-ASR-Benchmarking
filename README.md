@@ -1,72 +1,139 @@
-# Audio Transcription Tool
+# Uzbek ASR Benchmarking Tool
 
-This project allows you to download audio from YouTube or direct audio links and transcribe it using multiple speech recognition models, including Whisper and Uzbek speech-to-text models.
+**A lightweight pipeline for downloading audio, tracking users, and benchmarking Uzbek speech-to-text models.**
+
+This project lets you:
+
+Ask the user’s name
+
+Create or fetch that user from Supabase
+
+Save the URL they provided
+
+Download audio from YouTube or direct audio links
+
+Run transcription using multiple ASR models
+
+Save results in a results/ folder
+
+Keep the project folder clean (audio stored in audios/ temporarily)
 
 ## Features
+### User & URL Tracking (Supabase)
 
-Download audio from YouTube videos.
+* Automatically creates a user if not found
 
-Download direct audio files (.mp3, .wav, .aac, .ogg, .flac, .m4a).
+* Assigns user a unique ID
 
-Transcribe audio using multiple models:
+* Stores each URL they submit
 
-openai/whisper-small (supports timestamps)
+* Simple API for future expansion (adding scripts table, storing transcriptions, etc.)
 
-ipilot7/uzbek_speach_to_text
+## Audio Handling
+
+**Supports:**
+
+YouTube video → MP3 extraction
+
+Direct audio file links
+
+Automatic file naming and safe paths
+
+## ASR Models
+
+**Currently benchmarks:**
 
 mustafoyev202/whisper-uz
+(You can easily add more Whisper or Uzbek models)
 
-Save transcriptions to text files in a results folder.
+Outputs include:
+
+Clean transcription text
+
+Optional timestamps (for Whisper-family models)
+
+## Output
+
+Audio temporarily stored in: audios/
+
+Transcriptions saved to: results/
+
+Both folders are auto-created at runtime.
 
 ## Requirements
 
-Python 3.10+
+Python
 
-pip packages:
+Python **3.10+**
 
-pip install transformers yt_dlp requests
+Install dependencies
+pip install transformers yt_dlp requests supabase
 
+FFmpeg
 
-FFmpeg must be installed for audio extraction from YouTube:
-FFmpeg Installation Guide
+Required for YouTube audio extraction.
+
+FFmpeg install guide: https://ffmpeg.org/download.html
 
 ## Project Structure
+```bash
 project/
-
 │
-
-├── merged_folder/       # Up-to-date code and scripts
-
-├── audios/              # Folder where audio files are saved
-
-├── results/             # Folder where transcription results are saved
-
+├── STT_benchmark/
+│   ├── main.py              # Main runner script
+│   ├── functions.py         # Audio downloading helper functions
+│   ├── db.py                # Supabase client connection
+│   ├── user_service.py      # User + URL handling logic
+│   ├── audios/              # Auto-created temporary folder
+│   └── results/             # Auto-created output folder
+│
 └── README.md
+```
+
+## Setup Supabase Credentials
+
+Create a .env file (or set environment variables):
+
+SUPABASE_URL=your_url_here
+SUPABASE_SERVICE_KEY=your_service_key_here
+
+
+Your db.py automatically loads them.
 
 ## Usage
 
-Run the main script:
+Run:
 
 python main.py
 
 
-Enter the audio URL (YouTube or direct link) when prompted:
-
-url: https://www.youtube.com/watch?v=example
-
+**Then follow the prompts:**
+```bash
+Enter your name: Umrbek
+Enter audio or YouTube URL: https://www.youtube.com/watch?v=example
+```
 
 The script will:
 
-Download the audio into the audios folder
+ 1. Create/fetch user
 
-Run all configured speech recognition models
+ 2. Store the URL in Supabase
 
-Save each transcription in the results folder as a .txt file
+ 3. Download and process audio
+
+ 4. Run ASR model(s)
+
+ 5. Save results into:
+
+results/modelname_transcription.txt
 
 ## Notes
 
-For YouTube videos, the audio will be extracted in .mp3 format.
+audios/ and results/ are automatically created.
 
-Whisper models support timestamps at the word level, while other models support character-level timestamps.
+You should not commit audio or results to Git — they are temporary.
 
-Ensure a stable internet connection when downloading audio.
+Git ignore rules should contain:
+
+audios/
+results/
